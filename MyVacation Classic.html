@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, Bootstrap!</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<style>
+
+
+    body {
+        background-color: black;
+        background-image: url('https://assets-global.website-files.com/5a9ee6416e90d20001b20038/64f5c1c1f5723d7453a3de42_Rectangle%20(94).svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .card img {
+    max-width: 50%; /* Ensure the image fits within the card */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure proper rendering */
+    margin: 0 auto; /* Center the image horizontally within the card */
+    
+}
+
+
+</style>
+
+
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div class="content">
+
+<!-- Scene Main Menu-->
+<div class="card scene" id="Scene_MainMenu">
+    <div class="card-body">
+      <h5 class="card-title">Welcome to My Vacation!</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary">Main Menu</h6>
+      <p class="card-text">Select an option below to get started.</p>
+
+        <button type="button" id="NewGameMenu" class="btn btn-primary" style="margin-top:10px;" onclick="SetupNewGame();">New Game</button>
+
+        
+        <button type="button" id="LoadGameMenu" class="btn btn-primary" style="margin-top:10px;" onclick="SwitchScene('Scene_LoadGame');">Load Game</button>
+
+        <button type="button" id="AboutMenu" class="btn btn-primary" style="margin-top:10px;" onclick="SwitchScene('Scene_About');" >About</button>
+
+
+        </div>
+      </form>
+    </div>
+
+<!-- Scene Load Game-->
+<div class="card scene" id="Scene_LoadGame" style="display:none">
+    <div class="card-body">
+      <h5 class="card-title">Load Game</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+      <p class="card-text">To load your game, you must provide a save file that you used in your prior session. Get the file and then press "Load Game".</p>
+
+      <input type="file" id="fileInput"> <br><br>
+        
+        <button type="button" id="LoadGame" class="btn btn-primary" style="margin-top:10px;">Load Game</button>
+
+        <button type="button" id="About" class="btn btn-primary" style="margin-top:10px;" onclick="SwitchScene('Scene_MainMenu');">Back </button>
+
+
+        </div>
+      </form>
+    </div>
+
+<!-- Scene About-->
+<div class="card scene" id="Scene_About" style="display:none">
+    <div class="card-body">
+      <h5 class="card-title">About My Vacation</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+      <p class="card-text">My Vacation was originally created in 2013 and hosted on the chooseyourstory.com website. After receiving a lot of positive feedback, I decided to create a standalone game for MyVacation. This is the classic version of the game with some pieces changed and moved around. If you enjoy this game, feel free to support me on Patreon by dropping a donation! Enjoy! </p>
+
+        <button type="button" id="About" class="btn btn-primary" style="margin-top:10px;" onclick="SwitchScene('Scene_MainMenu');">Back </button>
+
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Scene Plane-->
+<div class="card scene" id="Scene_Plane" style="display:none">
+    <img class="card-img-top" src="images/imgPlane.jpg" alt="imgPlane">
+    <div class="card-body">
+      <h5 class="card-title">Your New Adventure</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+      <p class="card-text">Welcome aboard! We're about to embark on an exciting journey to a tropical paradise. But before we can dive into the adventure, what's your name?</p>
+
+      <input id="txtName" placeholder="Enter your name"><br><br>
+
+        <ul class="ulChoices">
+        <li><a href="#" onclick="ValidateName()">Continue</a></li>
+        <li><a href="#" onclick="SwitchScene('Scene_MainMenu')">Main Menu</a></li>
+        </ul>
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Scene Airport-->
+<div class="card scene" id="Scene_Airport" style="display:none">
+    <img class="card-img-top" src="images/imgAirport.jpg" alt="imgPlane">
+    <div class="card-body">
+      <h5 class="card-title">We've Landed</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+      <p class="card-text">It's nice to meet you <span id="Player_Name"></span>!</p>
+
+
+        <ul class="ulChoices">
+        <li><a href="#" onclick="ValidateName()">Continue</a></li>
+        <li><a href="#" onclick="SwitchScene('Scene_MainMenu')">Main Menu</a></li>
+        </ul>
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  </div>   
+  </div>   
+  </div>   
+  </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JS CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+    // Declare an empty object
+    var SaveDataDictionary = {};
+
+    //This will setup a new game by adding the necessary dictionary components to the game as necessary.
+    function SetupNewGame() {
+        // Clear the entire dictionary out
+        SaveDataDictionary = {};
+
+        // Add key-value pairs to the object
+        SaveDataDictionary["Player_Name"] = "";
+
+
+        //Needs
+        SaveDataDictionary["Need_Energy"] = 10;
+        SaveDataDictionary["Need_Hunger"] = 10;
+        SaveDataDictionary["Need_Hygiene"] = 10;
+        SaveDataDictionary["Need_Fun"] = 10;
+        SaveDataDictionary["Need_Bladder"] = 10;
+
+        //Skills
+        SaveDataDictionary["Skill_Body"] = 0;
+        SaveDataDictionary["Skill_Logic"] = 0;
+        SaveDataDictionary["Skill_Mechanical"] = 0;
+        SaveDataDictionary["Skill_Charisma"] = 0;
+        SaveDataDictionary["Skill_Spirit"] = 0;
+        
+        //Money and Inventory
+        SaveDataDictionary["Money"] = 300;
+        SaveDataDictionary["Inventory"] = ["Passport"]
+
+        //Relationships
+        SaveDataDictionary["Relationship_Wendy"] = 0;
+        SaveDataDictionary["Relationship_Jane"] = 0;
+        SaveDataDictionary["Relationship_Jake"] = 0;
+        SaveDataDictionary["Relationship_Jack"] = 0;
+        SaveDataDictionary["Relationship_Eric"] = 0;
+
+        //Change the Scene to the plane
+        SwitchScene("Scene_Plane");
+    }
+
+
+
+    //SwitchScene will switch the current scene to another one by accessing the card
+    function SwitchScene(sceneName) {
+        //Make the old scene not visible
+        $(".scene").hide();
+
+        //Display the new scene
+        $("#" + sceneName).show();
+
+        //Display any variables that need to be replaced
+        if ($("#Player_Name").is(":visible")) { $("#Player_Name").text(SaveDataDictionary["Player_Name"]); }
+    }
+
+    //Load Game Button
+    $('#LoadGame').click(function() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+
+    var reader = new FileReader();
+    reader.readAsText(file, 'UTF-8');
+
+    reader.onload = function(event) {
+      var jsonData = JSON.parse(event.target.result);
+      var dictionary = {};
+
+      // Assuming JSON data is an array of objects
+      $.each(jsonData, function(index, obj) {
+        // Assuming each object has a 'key' and a 'value' property
+        dictionary[obj.key] = obj.value;
+      });
+
+      // Example: Displaying the dictionary in the output div
+      $('#output').text(JSON.stringify(dictionary));
+    };
+
+    reader.onerror = function() {
+      console.error('Error reading the file.');
+    };
+  });
+
+
+  function ValidateName() {
+    var strName = $('#txtName').val();
+    var namePassed = true;
+
+    // Check if the name is blank
+    if (strName.trim() === '') {
+        namePassed = false;
+        alert("Please enter a valid name.")
+    }
+
+    // Check if the name contains only letters (no numbers or special symbols)
+    var regex = /^[a-zA-Z\s]*$/;
+    if (!regex.test(strName)) {
+        namePassed = false;
+        alert("Please enter a valid name.")
+    }
+
+    //Go to the next plane scene
+    if (namePassed) {
+        SaveDataDictionary["Player_Name"] = strName;
+        SwitchScene("Scene_Airport")
+    }
+
+  }
+
+
+
+
+  </script>
+
+
+</body>
+</html>
